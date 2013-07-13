@@ -1,0 +1,8 @@
+{
+  "run_list": [
+    "recipe[apt]",
+    "recipe[zsh]",
+    "recipe[environment]"
+  ],
+  "user": "ubuntu"
+}
