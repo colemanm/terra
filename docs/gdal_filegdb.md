@@ -18,3 +18,6 @@ sudo ldconfig
 ogrinfo --version
 
 sudo echo /usr/local/lib > /etc/ld.so.conf.d/local.conf
+
+
+./configure --with-java=yes --with-jvm-lib-add-rpath --with-mdb=yes
