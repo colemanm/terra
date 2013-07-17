@@ -2,7 +2,8 @@
   "run_list": [
     "recipe[apt]",
     "recipe[zsh]",
-    "recipe[environment]"
+    "recipe[environment]",
+    "recipe[gdal]"
   ],
   "user": "ubuntu"
 }
