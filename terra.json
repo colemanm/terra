@@ -5,5 +5,5 @@
     "recipe[environment]",
     "recipe[gdal]"
   ],
-  "user": "ubuntu"
+  "user": "vagrant"
 }

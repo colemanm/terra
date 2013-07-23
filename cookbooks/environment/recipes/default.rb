@@ -1,4 +1,4 @@
-%w[wget curl zip ack python-software-properties autoconf bison flex libyaml-dev libtool make vim git subversion openjdk-7-jdk build-essential].each do |pkg|
+%w[wget curl zip ack python-software-properties autoconf bison flex libyaml-dev libtool make vim git subversion openjdk-7-jdk swig build-essential].each do |pkg|
   package pkg do
     action :install
   end
@@ -39,8 +39,11 @@ end
   libgeotiff-dev
   libgdal-dev
   libpoppler-dev
+  python-dev
   python-pip
   python-gdal
+  ruby-dev
+  libgdal-ruby
   libjson0-dev
   gpsbabel
   imagemagick
@@ -82,10 +85,12 @@ end
 
 execute "Setup Ruby" do
   command <<-EOS
-    export RY_PREFIX=#{install_prefix} &&
-    export PATH=$RY_PREFIX/lib/ry/current/bin:$PATH &&
-    #{install_prefix}/lib/ry/current/bin/gem update --system &&
-    #{install_prefix}/lib/ry/current/bin/gem install bundler
+    if [ ! -x #{install_prefix}/lib/ry/current/bin/ruby ]; then
+      export RY_PREFIX=#{install_prefix} &&
+      export PATH=$RY_PREFIX/lib/ry/current/bin:$PATH &&
+      #{install_prefix}/lib/ry/current/bin/gem update --system &&
+      #{install_prefix}/lib/ry/current/bin/gem install bundler
+    fi
   EOS
   action :run
   user "root"
@@ -100,15 +105,21 @@ git "oh-my-zsh" do
 end
 
 execute "Copy .zshrc config" do
-  command "curl -L -o /home/#{node[:user]}/.zshrc https://raw.github.com/gist/789ba55f7ab0bf895a1c/5dc934f2737f75b306637c35258b984fc0127005/.zshrc"
+  command "curl -L -o /home/#{node[:user]}/.zshrc https://gist.github.com/colemanm/595e3ae013cb425effac/raw/4f63d1775e3dd484856974916aa30a41cc30dc76/terra.zshrc"
   action :run
   user node[:user]
 end
 
 execute "Install zsh theme" do
-  command "curl -L -o /home/#{node[:user]}/.oh-my-zsh/themes/hackbox.zsh-theme https://raw.github.com/gist/1e701eb696d8804fa19c/c729347309a79f6820f4ad6feb7b517242755510/hackbox.zsh-theme"
+  command "curl -L -o /home/#{node[:user]}/.oh-my-zsh/themes/terra.zsh-theme https://gist.github.com/colemanm/b213e31bb76c9e2c3f71/raw/d400f25944fe53dbcc256f4877da2dcbe5df4851/terra.zsh.theme"
   action :run
   user node[:user]
+end
+
+execute "Set shell to zsh" do
+  command "usermod -s /bin/zsh #{node[:user]}"
+  action :run
+  user "root"
 end
 
 git "n" do
@@ -133,4 +144,16 @@ execute "Install standard node modules" do
   command modules.map {|m| "npm install -g #{m}" }.join(' && ')
   action :run
   user 'root'
+end
+
+file "/etc/hostname" do
+  content "terra\n"
+end
+
+service "hostname" do
+  action :restart
+end
+
+file "/etc/hosts" do
+  content "127.0.0.1 localhost terra\n"
 end

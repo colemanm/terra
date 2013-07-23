@@ -1,39 +1,110 @@
+s3_path       = "https://terra-libs.s3.amazonaws.com"
+gdal_path     = "http://download.osgeo.org/gdal/1.10.0/gdal-1.10.0.tar.gz"
+src_path      = "/usr/local/src"
 
-execute "Download GDAL" do
-  command <<-EOS
-    cd /usr/local/src &&
-    wget http://download.osgeo.org/gdal/1.10.0/gdal-1.10.0.tar.gz &&
-    tar xvzf gdal-1.10.0.tar.gz
-  EOS
-  action :run
-  user "root"
+sdk_gdal      = "gdal-1.10.0.tar.gz"
+sdk_filegdb   = "FileGDB_API_1_2-64.tar.gz"
+sdk_mrsid     = "MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44.tar.gz"
+sdk_kml       = "install-libkml-r864-64bit.tar.gz"
+sdk_ecw       = "install-libecwj2-ubuntu12.04-64bit.tar.gz"
+sdk_openjpeg  = "install-openjpeg-2.0.0-ubuntu12.04-64bit.tar.gz"
+sdk_mdb       = "mdb-sqlite-1.0.2.tar.bz2"
+
+remote_file "#{Chef::Config["file_cache_path"]}/gdal-1.10.0.tar.gz" do
+  source "#{gdal_path}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/gdal-1.10.0.tar.gz")}
 end
 
-execute "Download and copy external libraries" do
-  command <<-EOS
-    cd /usr/local/src &&
-    wget https://terra-libs.s3.amazonaws.com/FileGDB_API_1_2-64.tar.gz &&
-    wget https://terra-libs.s3.amazonaws.com/MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44.tar.gz
-    wget https://terra-libs.s3.amazonaws.com/install-libecwj2-ubuntu12.04-64bit.tar.gz &&
-    wget https://terra-libs.s3.amazonaws.com/install-openjpeg-2.0.0-ubuntu12.04-64bit.tar.gz &&
-    wget http://mdb-sqlite.googlecode.com/files/mdb-sqlite-1.0.2.tar.bz2 &&
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_filegdb}" do
+  source "#{s3_path}/#{sdk_filegdb}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_filegdb}") }
+end
 
-    tar xzf FileGDB_API_1_2-64.tar.gz &&
-    cp -r FileGDB_API/include/* /usr/local/include &&
-    cp -r FileGDB_API/lib/* /usr/local/lib &&
-    tar xzf MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44.tar.gz &&
-    cp -r MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44/Raster_DSDK/include/* /usr/local/include &&
-    cp -r MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44/Raster_DSDK/lib/* /usr/local/lib &&
-    cp -r MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44/Lidar_DSDK/include/* /usr/local/include &&
-    cp -r MrSID_DSDK-8.5.0.3422-linux.x86-64.gcc44/Lidar_DSDK/lib/* /usr/local/lib &&
-    tar xzf install-libecwj2-ubuntu12.04-64bit.tar.gz &&
-    cp -r install-libecwj2/include/* /usr/local/include &&
-    cp -r install-libecwj2/lib/* /usr/local/lib &&
-    tar xzf install-openjpeg-2.0.0-ubuntu12.04-64bit.tar.gz &&
-    cp -r install-openjpeg/include/* /usr/local/include &&
-    cp -r install-openjpeg/lib/* /usr/local/lib &&
-    tar xjvf mdb-sqlite-1.0.2.tar.bz2 &&
-    cp mdb-sqlite-1.0.2/lib/*.jar /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_mrsid}" do
+  source "#{s3_path}/#{sdk_mrsid}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_mrsid}") }
+end
+
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_kml}" do
+  source "#{s3_path}/#{sdk_kml}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_kml}") }
+end
+
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_ecw}" do
+  source "#{s3_path}/#{sdk_ecw}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_ecw}") }
+end
+
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_openjpeg}" do
+  source "#{s3_path}/#{sdk_openjpeg}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_openjpeg}") }
+end
+
+remote_file "#{Chef::Config['file_cache_path']}/#{sdk_mdb}" do
+  source "#{s3_path}/#{sdk_mdb}"
+  action :create_if_missing
+  not_if { ::File.exists?("#{Chef::Config['file_cache_path']}/#{sdk_mdb}") }
+end
+
+execute "Extract libs" do
+  command <<-EOS
+    cd #{Chef::Config['file_cache_path']}
+
+    if [ ! -d "#{src_path}/gdal" ]; then
+      mkdir -p #{src_path}/gdal
+      tar xzf #{sdk_gdal} --strip 1 -C #{src_path}/gdal
+    fi
+
+    if [ ! -d "#{src_path}/filegdb" ]; then
+      mkdir -p #{src_path}/filegdb
+      tar xzf #{sdk_filegdb} --strip 1 -C #{src_path}/filegdb
+      cp -r #{src_path}/filegdb/include/* /usr/local/include
+      cp -r #{src_path}/filegdb/lib/* /usr/local/lib
+    fi
+
+    if [ ! -d "#{src_path}/mrsid" ]; then
+      mkdir -p #{src_path}/mrsid
+      tar xzf #{sdk_mrsid} --strip 1 -C #{src_path}/mrsid
+      cp -r #{src_path}/mrsid/Raster_DSDK/include/* /usr/local/include
+      cp -r #{src_path}/mrsid/Raster_DSDK/lib/* /usr/local/lib
+      cp -r #{src_path}/mrsid/Lidar_DSDK/include/* /usr/local/include
+      cp -r #{src_path}/mrsid/Lidar_DSDK/lib/* /usr/local/lib
+    fi
+
+    if [ ! -d "#{src_path}/libkml" ]; then
+      mkdir -p #{src_path}/libkml
+      tar xzf #{sdk_kml} --strip 1 -C #{src_path}/libkml
+      cp -r #{src_path}/libkml/include/* /usr/local/include
+      cp -r #{src_path}/libkml/lib/* /usr/local/lib
+    fi
+
+    if [ ! -d "#{src_path}/libecwj2" ]; then
+      mkdir -p #{src_path}/libecwj2
+      tar xzf #{sdk_ecw} --strip 1 -C #{src_path}/libecwj2
+      cp -r #{src_path}/libecwj2/include/* /usr/local/include
+      cp -r #{src_path}/libecwj2/lib/* /usr/local/lib
+    fi
+
+    if [ ! -d "#{src_path}/openjpeg" ]; then
+      mkdir -p #{src_path}/openjpeg
+      tar xzf #{sdk_openjpeg} --strip 1 -C #{src_path}/openjpeg
+      cp -r #{src_path}/openjpeg/include/* /usr/local/include
+      cp -r #{src_path}/openjpeg/lib/* /usr/local/lib
+    fi
+
+    if [ ! -d "#{src_path}/mdb-sqlite" ]; then
+      mkdir -p #{src_path}/mdb-sqlite
+      tar xjvf #{sdk_mdb} --strip 1 -C #{src_path}/mdb-sqlite
+      cp #{src_path}/mdb-sqlite/lib/*.jar /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext
+    fi
+
+    ldconfig
   EOS
   action :run
   user "root"
@@ -41,7 +112,7 @@ end
 
 execute "Configure GDAL" do
   command <<-EOS
-    cd /usr/local/src/gdal-1.10.0
+    cd /usr/local/src/gdal
     ./configure \
       --with-local \
       --prefix=/usr/local \
@@ -53,7 +124,6 @@ execute "Configure GDAL" do
       --with-liblzma \
       --with-expat=/usr \
       --with-sqlite3=/usr \
-      --with-ruby \
       --with-python \
       --with-geos \
       --with-spatialite \
@@ -64,7 +134,9 @@ execute "Configure GDAL" do
       --with-poppler \
       --with-webp \
       --with-java \
+      --with-jvm-lib-add-rpath \
       --with-mdb \
+      --with-libkml \
       --with-mrsid=/usr/local \
       --with-fgdb=/usr/local \
       --with-mrsid=/usr/local \
@@ -79,6 +151,7 @@ end
 
 execute "Build and install GDAL" do
   command <<-EOS
+    cd /usr/local/src/gdal
     make
     make install
     ldconfig

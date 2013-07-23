@@ -4,8 +4,7 @@ Vagrant::Config.run do |config|
 
   config.vm.box = "precise"
   config.vm.customize ["modifyvm", :id, "--memory", 1024]
-
-  config.vm.forward_port 80, 80
+  config.vm.share_folder "data", "/home/vagrant/data/", "data/", create: true
 
   json = JSON.parse(File.open("terra.json").read)
 

@@ -21,7 +21,7 @@ The box includes the following software tools ready to go:
 
 ## Getting Started
 
-Terra is designed to use [Vagrant](http://vagrantup.com/) to quickly provision a local virtual machine. Combined with [Chef](http://www.opscode.com/chef/) automation tools, you can be up and running with a full suite in minutes.
+Terra uses [Vagrant](http://vagrantup.com/) to quickly provision a local virtual machine. Combined with [Chef](http://www.opscode.com/chef/) automation tools, you can be up and running with a full suite in minutes.
 
 First you need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads), then download and install [Vagrant](http://downloads.vagrantup.com/) for your platform.
 
