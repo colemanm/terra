@@ -112,38 +112,40 @@ end
 
 execute "Configure GDAL" do
   command <<-EOS
-    cd /usr/local/src/gdal
-    ./configure \
-      --with-local \
-      --prefix=/usr/local \
-      --with-threads \
-      --with-libtool \
-      --with-bsb \
-      --with-grib \
-      --with-pam \
-      --with-liblzma \
-      --with-expat=/usr \
-      --with-sqlite3=/usr \
-      --with-python \
-      --with-geos \
-      --with-spatialite \
-      --with-netcdf \
-      --with-jpeg \
-      --with-jpeg12 \
-      --with-gif \
-      --with-poppler \
-      --with-webp \
-      --with-java \
-      --with-jvm-lib-add-rpath \
-      --with-mdb \
-      --with-libkml \
-      --with-mrsid=/usr/local \
-      --with-fgdb=/usr/local \
-      --with-mrsid=/usr/local \
-      --with-mrsid-lidar=/usr/local \
-      --with-jp2mrsid \
-      --with-openjpeg=/usr/local \
-      --with-ecw=/usr/local
+    if [ ! -f /usr/local/bin/ogr2ogr ]; then
+      cd /usr/local/src/gdal
+      ./configure \
+        --with-local \
+        --prefix=/usr/local \
+        --with-threads \
+        --with-libtool \
+        --with-bsb \
+        --with-grib \
+        --with-pam \
+        --with-liblzma \
+        --with-expat=/usr \
+        --with-sqlite3=/usr \
+        --with-python \
+        --with-geos \
+        --with-spatialite \
+        --with-netcdf \
+        --with-jpeg \
+        --with-jpeg12 \
+        --with-gif \
+        --with-poppler \
+        --with-webp \
+        --with-java \
+        --with-jvm-lib-add-rpath \
+        --with-mdb \
+        --with-libkml \
+        --with-mrsid=/usr/local \
+        --with-fgdb=/usr/local \
+        --with-mrsid=/usr/local \
+        --with-mrsid-lidar=/usr/local \
+        --with-jp2mrsid \
+        --with-openjpeg=/usr/local \
+        --with-ecw=/usr/local
+    fi
   EOS
   action :run
   user "root"
@@ -151,10 +153,12 @@ end
 
 execute "Build and install GDAL" do
   command <<-EOS
-    cd /usr/local/src/gdal
-    make
-    make install
-    ldconfig
+    if [ ! -f /usr/local/bin/ogr2ogr ]; then
+      cd /usr/local/src/gdal
+      make
+      make install
+      ldconfig
+    fi
   EOS
   action :run
   user "root"

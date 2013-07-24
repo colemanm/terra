@@ -3,7 +3,8 @@
     "recipe[apt]",
     "recipe[zsh]",
     "recipe[environment]",
-    "recipe[gdal]"
+    "recipe[gdal]",
+    "recipe[postgis]"
   ],
   "user": "vagrant"
 }

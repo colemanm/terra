@@ -1,0 +1,1 @@
+default["postgis"]["conf_path"] = "/etc/postgresql/9.2/main"
