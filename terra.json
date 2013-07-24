@@ -4,7 +4,8 @@
     "recipe[zsh]",
     "recipe[environment]",
     "recipe[gdal]",
-    "recipe[postgis]"
+    "recipe[postgis]",
+    "recipe[tilemill]"
   ],
   "user": "vagrant"
 }
