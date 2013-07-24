@@ -1,5 +1,6 @@
 # Download sample data
 data: \
+	mkdir data/ \
 	data/sample.mdb \
 	data/sample_fgdb.zip \
 	data/sample.sid \
