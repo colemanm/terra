@@ -54,6 +54,13 @@ end
   end
 end
 
+directory "/home/#{node[:user]}/local" do
+  owner node[:user]
+  group node[:user]
+  mode 0755
+  action :create
+end
+
 # Install ry
 git "ry" do
   repository "git://github.com/zhm/ry.git"
