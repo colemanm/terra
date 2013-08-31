@@ -1,0 +1,14 @@
+ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="terra"
+
+plugins=(git)
+
+export RY_PREFIX=/usr/local
+export N_PREFIX=/usr/local
+export PATH=$HOME/local/bin:$PATH
+export PATH=$RY_PREFIX/lib/ry/current/bin:/usr/local/n/current/bin:$PATH
+export PATH=$HOME/local/ogrtool/bin:$PATH
+export PATH=$HOME/local/gazetteer/bin:$PATH
+
+source $ZSH/oh-my-zsh.sh

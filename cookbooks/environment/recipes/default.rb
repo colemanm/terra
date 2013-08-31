@@ -111,16 +111,18 @@ git "oh-my-zsh" do
   user node[:user]
 end
 
-execute "Copy .zshrc config" do
-  command "curl -L -o /home/#{node[:user]}/.zshrc https://gist.github.com/colemanm/595e3ae013cb425effac/raw/4f63d1775e3dd484856974916aa30a41cc30dc76/terra.zshrc"
-  action :run
-  user node[:user]
+template "/home/" + node[:user] + "/.zshrc" do
+  source "terra.zshrc.erb"
+  mode 0644
+  owner node[:user]
+  group node[:user]
 end
 
-execute "Install zsh theme" do
-  command "curl -L -o /home/#{node[:user]}/.oh-my-zsh/themes/terra.zsh-theme https://gist.github.com/colemanm/b213e31bb76c9e2c3f71/raw/d400f25944fe53dbcc256f4877da2dcbe5df4851/terra.zsh.theme"
-  action :run
-  user node[:user]
+template "/home/" + node[:user] + "/.oh-my-zsh/themes/terra.zsh-theme" do
+  source "terra.zsh-theme.erb"
+  mode 0644
+  owner node[:user]
+  group node[:user]
 end
 
 execute "Set shell to zsh" do
