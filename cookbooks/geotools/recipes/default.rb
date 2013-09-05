@@ -10,8 +10,8 @@ end
 
 execute "install ogrtool" do
   command <<-EOS
-    `cd #{src_path}/ogrtool`
-    `make`
+    cd #{src_path}/ogrtool
+    make
   EOS
   action :run
   user node[:user]
@@ -27,8 +27,8 @@ end
 
 execute "install gazetteer" do
   command <<-EOS
-    `cd #{src_path}/gazetteer`
-    `make`
+    cd #{src_path}/gazetteer
+    make
   EOS
   action :run
   user node[:user]
