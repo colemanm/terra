@@ -5,8 +5,8 @@
     "recipe[environment]",
     "recipe[gdal]",
     "recipe[postgis]",
-    "recipe[tilemill]",
-    "recipe[geotools]"
+    "recipe[tilemill]"
+    // "recipe[geotools]"
   ],
   "user": "vagrant"
 }

@@ -1,10 +1,13 @@
 require 'json'
 
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
 
   config.vm.box = "precise"
-  config.vm.customize ["modifyvm", :id, "--memory", 1024]
-  config.vm.share_folder "data", "/home/vagrant/data/", "data/", create: true
+  config.vm.synced_folder "data", "/home/vagrant/data/"
+
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--memory", 1024]
+  end
 
   json = JSON.parse(File.open("terra.json").read)
 
