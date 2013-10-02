@@ -3,7 +3,9 @@ require 'json'
 Vagrant.configure("2") do |config|
 
   config.vm.box = "precise"
-  config.vm.synced_folder "data", "/home/vagrant/data/"
+  
+  # This adds a shared folder between the host machine and the VM. See README.
+  # config.vm.synced_folder "data", "/home/vagrant/data/"
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", 1024]
