@@ -28,8 +28,6 @@ First you need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads
 ```shell
 git clone https://github.com/colemanm/terra
 cd terra
-git submodule init
-git submodule update
 vagrant box add precise http://files.vagrantup.com/precise64.box
 ```
 
