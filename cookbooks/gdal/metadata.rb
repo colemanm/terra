@@ -1,6 +1,6 @@
-name                "gdal-full"
-maintainer          "Coleman MCormick"
-maintainer_email    "cmccormick@gmail.com"
-license             "BSD"
-description         "GDAL installation with full format support"
-version             "0.1"
+name 'gdal-complete'
+maintainer 'Coleman McCormick'
+maintainer_email 'cmccormick@gmail.com'
+license 'BSD'
+description 'GDAL installation with full format support'
+version '0.1'
