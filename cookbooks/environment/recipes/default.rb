@@ -12,6 +12,12 @@ install_prefix = "/usr/local"
   end
 end
 
+["add-apt-repository ppa:gophers/go -y", "apt-get update"].each do |cmd|
+  execute cmd do
+    user "root"
+  end
+end
+
 # Mapnik 2.2
 ["add-apt-repository ppa:mapnik/v2.2.0 -y", "apt-get update"].each do |cmd|
   execute cmd do
@@ -39,6 +45,7 @@ end
   libgeotiff-dev
   libgdal-dev
   libpoppler-dev
+  libleveldb-dev
   python-dev
   python-pip
   python-gdal
@@ -48,6 +55,7 @@ end
   gpsbabel
   imagemagick
   openjdk-7-jdk
+  golang-stable
 ].each do |pkg|
   package pkg do
     action :install

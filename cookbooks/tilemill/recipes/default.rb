@@ -6,6 +6,7 @@ end
 
 %w[
   tilemill
+  libmapnik
   nodejs
 ].each do |pkg|
   package pkg do
