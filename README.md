@@ -29,6 +29,11 @@ First you need to install [VirtualBox](https://www.virtualbox.org/wiki/Downloads
 git clone https://github.com/colemanm/terra
 cd terra
 vagrant box add precise http://files.vagrantup.com/precise64.box
+
+# Also need to have Berkshelf installed
+vagrant plugin install vagrant-berkshelf
+gem install berkshelf
+berks install
 ```
 
 ## Usage
