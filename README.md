@@ -30,10 +30,9 @@ git clone https://github.com/colemanm/terra
 cd terra
 vagrant box add precise http://files.vagrantup.com/precise64.box
 
-# Also need to have Berkshelf installed
-vagrant plugin install vagrant-berkshelf
-gem install berkshelf
-berks install
+# Initialize submodules
+git submodule init
+git submodule update
 ```
 
 ## Usage
