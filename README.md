@@ -61,9 +61,9 @@ And completely rebuild again from scratch:
 
 ## Working with Data
 
-Once you've SSH'ed into your VM instance, you'll see a `data` directory if you list files. This folder is shared between the host (your computer) and the guest (the VM). Putting files you want to work with - like databases, shapefiles, or imagery - here will allow you to work with them in the VM sandbox for conversion, processing, and other tasks. This keeps it easy to have your geo toolbox clean and consistent for working with various data types.  
+Once you've SSH'ed into your VM instance, you'll see a `data` directory if you list files. This folder is shared between the host (your computer) and the guest (the VM). Putting files you want to work with - like databases, shapefiles, or imagery - here will allow you to work with them in the VM sandbox for conversion, processing, and other tasks. This keeps it easy to have your geo toolbox clean and consistent for working with various data types.
 
-If you put files in the '/data' dir in the terra local repo, they should show up in ~/data when you ssh to the VM. It should link to the directory on your machine, using VirtualBox shared folders.  
+If you put files in the '/data' dir in the terra local repo, they should show up in ~/data when you `ssh` to the VM. It should link to the directory on your machine, using VirtualBox shared folders.
 
 ## Testing it Out
 

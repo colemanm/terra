@@ -1,0 +1,6 @@
+[submodule "cookbooks/apt"]
+	path = cookbooks/apt
+	url = https://github.com/opscode-cookbooks/apt
+[submodule "cookbooks/zsh"]
+	path = cookbooks/zsh
+	url = https://github.com/opscode-cookbooks/zsh

@@ -4,7 +4,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.hostname = 'terra'
   config.vm.box = "precise"
-  config.berkshelf.enabled = true
   config.vm.synced_folder "data", "/home/vagrant/data/"
 
   config.vm.provider "virtualbox" do |v|
